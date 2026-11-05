@@ -1,0 +1,41 @@
+Package: bioconice
+Title: Query bioc-on-ice Releases of Bioconductor Annotation
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Sean",
+           family = "Davis",
+           email = "seandavi@gmail.com",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8991-6458")),
+    person(given = "National Cancer Institute",
+           role = "fnd",
+           comment = "ITCR award U24CA289073"))
+Description: bioc-on-ice publishes the annotation behind Bioconductor's
+    OrgDb, TxDb and EnsDb packages, plus GO and other ontologies,
+    orthologs, interactions, pathways, GWAS Catalog associations and
+    literature links, as weekly releases of Parquet tables with DuckDB
+    views. bioconice attaches a release to DuckDB read-only over HTTPS,
+    so every species and source can be queried with SQL or dplyr without
+    installing an annotation package or downloading the data, and a
+    release can be pinned by date for reproducible analyses.
+License: MIT + file LICENSE
+Depends:
+    R (>= 4.1.0)
+Imports:
+    DBI,
+    duckdb,
+    tibble,
+    tools,
+    utils
+Suggests:
+    curl,
+    dbplyr,
+    dplyr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+URL: https://github.com/seandavi/bioconice, https://bioconice.cancerdatasci.org
+BugReports: https://github.com/seandavi/bioconice/issues
+biocViews: Software, Annotation, DataImport, ThirdPartyClient
+Config/roxygen2/version: 8.1.0
