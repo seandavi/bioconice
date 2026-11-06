@@ -1,0 +1,82 @@
+{
+  "release": "2026-11-04",
+  "published_at": "2026-11-04T16:29:53+00:00",
+  "git_sha": "a577def1ffbd4677334ee72bb8e1b32c793e3915",
+  "base_url": "https://data.bioconice.cancerdatasci.org/latest",
+  "tables": [
+    {
+      "schema": "annotation",
+      "table": "ncbi__gene",
+      "path": "annotation/ncbi__gene.parquet",
+      "row_count": 73664629,
+      "bytes": 1269314619,
+      "sha256": "cc569f9cfff03595522d64ab88479a62b4845b371ca7f354ab0c11d9ea17245e",
+      "comment": "Genes as NCBI Gene defines them, keyed by Entrez GeneID. Separate from annotation.gene rather than extra columns on it, ",
+      "columns": [
+        {
+          "name": "gene_id",
+          "type": "VARCHAR",
+          "doc": "NCBI Entrez GeneID, e.g. 7157. The central key of OrgDb, which is why this table"
+        },
+        {
+          "name": "taxon_id",
+          "type": "INTEGER",
+          "doc": "NCBI taxonomy id of the organism, e.g. 9606 for human. Part of the merge key."
+        },
+        {
+          "name": "symbol",
+          "type": "VARCHAR",
+          "doc": "NCBI's default symbol, e.g. TP53. May disagree with the symbol Ensembl carries i"
+        }
+      ]
+    },
+    {
+      "schema": "clinical",
+      "table": "gwas_catalog__association",
+      "path": "clinical/gwas_catalog__association.parquet",
+      "row_count": 1203708,
+      "bytes": 95257151,
+      "sha256": "d51e271880b2a69ed7f20565465fd76be77377e270f9922e676b53a6643aadcd",
+      "comment": "Curated variant-trait associations from the GWAS Catalog (p < 1e-5 in the source paper), one row per association. A row ",
+      "columns": [
+        {
+          "name": "association_key",
+          "type": "VARCHAR",
+          "doc": "md5 of the nine curated columns \u2014 study_accession, snps, strongest_snp_risk_alle"
+        },
+        {
+          "name": "study_accession",
+          "type": "VARCHAR",
+          "doc": "GWAS Catalog study accession; joins clinical.gwas_catalog__study, which holds th"
+        },
+        {
+          "name": "snps",
+          "type": "VARCHAR",
+          "doc": "The variant: an rsID on most rows, otherwise whatever the paper gave ('chr19:583"
+        }
+      ]
+    }
+  ],
+  "provenance": [
+    {
+      "release": "2026.08",
+      "source": "bugsigdb",
+      "source_version": "v1.3.1",
+      "version_method": "release_number",
+      "retrieved_at": "2026-08-07T16:22:45+00:00",
+      "url": "https://raw.githubusercontent.com/waldronlab/bugsigdbexports/v1.3.1/full_dump.csv",
+      "checksum": null,
+      "row_count": 7425
+    },
+    {
+      "release": "2026.08",
+      "source": "ensembl",
+      "source_version": "116",
+      "version_method": "release_number",
+      "retrieved_at": "2026-08-07T16:04:40+00:00",
+      "url": "https://ftp.ensembl.org/pub/release-116/gtf/mus_musculus/Mus_musculus.GRCm39.116.gtf.gz",
+      "checksum": null,
+      "row_count": 8417898
+    }
+  ]
+}
