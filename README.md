@@ -36,7 +36,7 @@ con <- bioconice_connect()   # a plain DuckDB DBI connection, ~2 s
 ### 1. Gene lookup across species, no org.*.eg.db
 
 ``` r
-dplyr::tbl(con, I("annotation.ncbi__gene")) |>
+bioconice_tbl(con, "annotation.ncbi__gene") |>
   dplyr::filter(symbol %in% c("TP53", "Trp53", "Tp53"),
                 taxon_id %in% c(9606, 10090, 10116)) |>
   dplyr::select(taxon_id, gene_id, symbol, description, map_location) |>
@@ -189,6 +189,7 @@ from a release
 | Function | Returns |
 |---|---|
 | `bioconice_connect(version)` | A DuckDB DBI connection with the release's views attached |
+| `bioconice_tbl(con, table)` | A lazy `dplyr` table on one `schema.table` |
 | `bioconice_tables(con)` | Tables with row counts and descriptions |
 | `bioconice_describe(con, table)` | Columns, types and docs of a table |
 | `bioconice_release(con)` | Release date, `git_sha`, URLs and a citation string |

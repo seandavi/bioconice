@@ -23,7 +23,7 @@ groups they need.
 \details{
 After connecting, tables are referenced as \code{schema.table}, for
 example \code{annotation.ncbi__gene} or \code{clinical.gwas_catalog__association},
-in SQL or as \code{dplyr::tbl(con, I("annotation.ncbi__gene"))}.
+in SQL, or as \code{bioconice_tbl(con, "annotation.ncbi__gene")} for dplyr.
 \code{\link[=bioconice_tables]{bioconice_tables()}} lists them with row counts and descriptions, and
 \code{\link[=bioconice_describe]{bioconice_describe()}} documents the columns of one.
 }

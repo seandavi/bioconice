@@ -7,7 +7,7 @@
 #'
 #' After connecting, tables are referenced as `schema.table`, for
 #' example `annotation.ncbi__gene` or `clinical.gwas_catalog__association`,
-#' in SQL or as `dplyr::tbl(con, I("annotation.ncbi__gene"))`.
+#' in SQL, or as `bioconice_tbl(con, "annotation.ncbi__gene")` for dplyr.
 #' [bioconice_tables()] lists them with row counts and descriptions, and
 #' [bioconice_describe()] documents the columns of one.
 #'

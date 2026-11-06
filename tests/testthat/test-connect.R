@@ -58,6 +58,34 @@ test_that("helpers reject things that are not bioconice connections", {
     on.exit(DBI::dbDisconnect(con))
     expect_error(bioconice_tables(con), "must be a connection")
     expect_error(bioconice_describe(con, "x.y"), "must be a connection")
+    expect_error(bioconice_tbl(con, "x.y"), "must be a connection")
+})
+
+test_that("bioconice_tbl reads a manifest table lazily and rejects others", {
+    skip_if_not_installed("dplyr")
+    skip_if_not_installed("dbplyr")
+    con <- DBI::dbConnect(duckdb::duckdb())
+    on.exit(DBI::dbDisconnect(con))
+    # A connection shaped like bioconice_connect()'s, with the fixture's
+    # annotation.ncbi__gene as a real table so the query can run offline.
+    attr(con, "bioconice_release") <- read_manifest(
+        con, "2026-11-04", paste0(test_path("fixtures"), "/")
+    )
+    DBI::dbExecute(con, "
+    CREATE SCHEMA annotation;
+    CREATE TABLE annotation.ncbi__gene AS
+    SELECT * FROM (VALUES ('7157', 9606, 'TP53'), ('22059', 10090, 'Trp53'))
+        AS t(gene_id, taxon_id, symbol)")
+    lazy <- bioconice_tbl(con, "annotation.ncbi__gene")
+    expect_s3_class(lazy, "tbl_lazy")
+    out <- lazy |>
+        dplyr::filter(symbol == "TP53", taxon_id == 9606L) |>
+        dplyr::select(gene_id, symbol) |>
+        dplyr::collect()
+    expect_equal(out$gene_id, "7157")
+    expect_error(bioconice_tbl(con, "ncbi__gene"), "schema-qualified")
+    expect_error(bioconice_tbl(con, "annotation.nope"), "No table")
+    expect_error(bioconice_tbl(con, c("a.b", "c.d")))
 })
 
 test_that("bioconice_connect attaches the latest release", {
@@ -116,14 +144,14 @@ test_that("bioconice_connect attaches the latest release", {
     expect_error(bioconice_describe(con, "ncbi__gene"), "schema-qualified")
 })
 
-test_that("dplyr::tbl reads a schema-qualified view", {
+test_that("bioconice_tbl reads a schema-qualified view of a release", {
     skip_on_cran()
     skip_if_offline()
     skip_if_not_installed("dplyr")
     skip_if_not_installed("dbplyr")
     con <- bioconice_connect()
     on.exit(DBI::dbDisconnect(con))
-    out <- dplyr::tbl(con, I("annotation.ncbi__gene")) |>
+    out <- bioconice_tbl(con, "annotation.ncbi__gene") |>
         dplyr::filter(symbol == "TP53", taxon_id == 9606L) |>
         dplyr::select(gene_id, symbol) |>
         dplyr::collect()
