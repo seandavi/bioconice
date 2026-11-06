@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A problem in the data
+    url: https://github.com/seandavi/bioc-on-ice/issues
+    about: Wrong values or a missing source belong on bioc-on-ice, where the data is built.
